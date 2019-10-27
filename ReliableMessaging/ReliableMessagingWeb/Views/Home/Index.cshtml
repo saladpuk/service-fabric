@@ -26,9 +26,7 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="row top-buffer" ng-repeat="it in serverStatus.data">
-                    <div class="col-xs-8">
-                        {{it.Key}} - {{it.Value}}
-                    </div>
+                    <img src="/assets/{{it.status}}.gif" />
                 </div>
             </div>
         </div>

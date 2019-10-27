@@ -19,11 +19,14 @@ namespace ReliableMessagingWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var random = new Random();
-            var votes = new List<KeyValuePair<string, int>>();
-            votes.Add(new KeyValuePair<string, int>("Pizza", random.Next(1, 100)));
-            votes.Add(new KeyValuePair<string, int>("Ice cream", random.Next(1, 100)));
-            return Json(votes);
+            var result = new[]
+            {
+                new { Name = "1",  Status = "sending" },
+                new { Name = "2",  Status = "sendingdown" },
+                new { Name = "3",  Status = "idle" },
+                new { Name = "4",  Status = "idledown" },
+            };
+            return this.Json(result);
         }
     }
 }
