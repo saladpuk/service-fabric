@@ -1,4 +1,15 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿var app = angular.module('MessageApp', ['ui.bootstrap']);
+app.run(function () { });
 
-// Write your JavaScript code.
+app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeout', function ($rootScope, $scope, $http, $timeout) {
+
+    $scope.refresh = function () {
+        $http.get('api/Message?c=' + new Date().getTime())
+            .then(function (data, status) {
+                $scope.serverStatus = data;
+            }, function (data, status) {
+                $scope.serverStatus = undefined;
+            });
+    };
+
+}]);

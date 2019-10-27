@@ -11,6 +11,7 @@ using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.ServiceFabric.Data;
+using System.Net.Http;
 
 namespace ReliableMessagingWeb
 {
@@ -31,22 +32,28 @@ namespace ReliableMessagingWeb
         {
             return new ServiceInstanceListener[]
             {
-                new ServiceInstanceListener(serviceContext =>
-                    new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
-                    {
-                        ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
+                new ServiceInstanceListener(
+                    serviceContext =>
+                        new KestrelCommunicationListener(
+                            serviceContext,
+                            "ServiceEndpoint",
+                            (url, listener) =>
+                            {
+                                ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
 
-                        return new WebHostBuilder()
+                                return new WebHostBuilder()
                                     .UseKestrel()
                                     .ConfigureServices(
                                         services => services
+                                            .AddSingleton<HttpClient>(new HttpClient())
+                                            .AddSingleton<FabricClient>(new FabricClient())
                                             .AddSingleton<StatelessServiceContext>(serviceContext))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
                                     .UseUrls(url)
                                     .Build();
-                    }))
+                            }))
             };
         }
     }
