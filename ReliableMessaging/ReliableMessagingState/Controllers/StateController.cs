@@ -45,12 +45,32 @@ namespace ReliableMessagingState.Controllers
                 .GetOrAddAsync<IReliableDictionary<int, string>>("serverStatus");
 
             using var tx = stateManager.CreateTransaction();
-            await serverStatusDictionary.AddAsync(tx, 1, "sending");
+            await serverStatusDictionary.AddAsync(tx, 1, "idle");
             await serverStatusDictionary.AddAsync(tx, 2, "idle");
             await serverStatusDictionary.AddAsync(tx, 3, "idle");
-            await serverStatusDictionary.AddAsync(tx, 4, "idle");
             await tx.CommitAsync();
 
+            return new OkResult();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id)
+        {
+            var serverStatusDictionary = await stateManager
+               .GetOrAddAsync<IReliableDictionary<int, string>>("serverStatus");
+
+            using var tx = stateManager.CreateTransaction();
+            await serverStatusDictionary.AddOrUpdateAsync(tx, id, "sending", (key, old) =>
+            {
+                switch (old)
+                {
+                    case "sending": return "idle";
+                    case "idle": return "sending";
+                    default: break;
+                }
+                return old;
+            });
+            await tx.CommitAsync();
             return new OkResult();
         }
     }

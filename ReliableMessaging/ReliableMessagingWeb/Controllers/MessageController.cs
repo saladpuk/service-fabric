@@ -75,6 +75,22 @@ namespace ReliableMessagingWeb.Controllers
             };
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id)
+        {
+            var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(this.serviceContext);
+            var proxyAddress = this.GetProxyAddress(serviceName);
+            var partitionKey = this.GetPartitionKey(id.ToString());
+            var proxyUrl = $"{proxyAddress}/api/State/{id}?PartitionKey={partitionKey}&PartitionKind=Int64Range";
+
+            using var response = await this.httpClient.PutAsync(proxyUrl, null);
+            return new ContentResult()
+            {
+                StatusCode = (int)response.StatusCode,
+                Content = await response.Content.ReadAsStringAsync()
+            };
+        }
+
         private Uri GetProxyAddress(Uri serviceName)
             => new Uri($"http://localhost:19081{serviceName.AbsolutePath}");
 
