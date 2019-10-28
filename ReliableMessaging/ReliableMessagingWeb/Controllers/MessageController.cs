@@ -33,7 +33,7 @@ namespace ReliableMessagingWeb.Controllers
             var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
             var proxyAddress = GetProxyAddress(serviceName);
             var partitions = await fabricClient.QueryManager.GetPartitionListAsync(serviceName);
-            var result = new List<KeyValuePair<string, string>>();
+            var result = new List<KeyValuePair<int, string>>();
 
             foreach (Partition partition in partitions)
             {
@@ -46,7 +46,7 @@ namespace ReliableMessagingWeb.Controllers
                 }
 
                 var responseText = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(responseText);
+                var data = JsonConvert.DeserializeObject<List<KeyValuePair<int, string>>>(responseText);
                 result.AddRange(data);
             }
 

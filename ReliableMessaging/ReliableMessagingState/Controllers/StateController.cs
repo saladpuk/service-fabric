@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +22,13 @@ namespace ReliableMessagingState.Controllers
         public async Task<IActionResult> Get()
         {
             var ct = new CancellationToken();
-            var votesDictionary = await stateManager.GetOrAddAsync<IReliableDictionary<string, string>>("serverStatus");
+            var serverStatusDictionary = await stateManager
+                .GetOrAddAsync<IReliableDictionary<int, string>>("serverStatus");
 
             using var tx = stateManager.CreateTransaction();
-            var list = await votesDictionary.CreateEnumerableAsync(tx);
+            var list = await serverStatusDictionary.CreateEnumerableAsync(tx);
             var enumerator = list.GetAsyncEnumerator();
-            var result = new List<KeyValuePair<string, string>>();
+            var result = new List<KeyValuePair<int, string>>();
 
             while (await enumerator.MoveNextAsync(ct))
             {
@@ -39,13 +41,14 @@ namespace ReliableMessagingState.Controllers
         [HttpPost]
         public async Task<IActionResult> Post()
         {
-            var votesDictionary = await stateManager.GetOrAddAsync<IReliableDictionary<string, string>>("serverStatus");
+            var serverStatusDictionary = await stateManager
+                .GetOrAddAsync<IReliableDictionary<int, string>>("serverStatus");
 
             using var tx = stateManager.CreateTransaction();
-            await votesDictionary.AddOrUpdateAsync(tx, "1", "sending", (key, oldvalue) => "sendingdown");
-            await votesDictionary.AddOrUpdateAsync(tx, "2", "sendingdown", (key, oldvalue) => "sending");
-            await votesDictionary.AddOrUpdateAsync(tx, "3", "idle", (key, oldvalue) => "sending");
-            await votesDictionary.AddOrUpdateAsync(tx, "4", "idledown", (key, oldvalue) => "idle");
+            await serverStatusDictionary.AddAsync(tx, 1, "sending");
+            await serverStatusDictionary.AddAsync(tx, 2, "idle");
+            await serverStatusDictionary.AddAsync(tx, 3, "idle");
+            await serverStatusDictionary.AddAsync(tx, 4, "idle");
             await tx.CommitAsync();
 
             return new OkResult();
