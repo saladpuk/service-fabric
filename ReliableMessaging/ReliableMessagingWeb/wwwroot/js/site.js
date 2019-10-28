@@ -12,4 +12,10 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
             });
     };
 
+    $scope.start = function () {
+        $http.post('api/Message').then(function (status) {
+            console.log(status);
+        });
+    };
+
 }]);

@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace ReliableMessagingWeb.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Message")]
+    [Route("api/[controller]")]
     public class MessageController : Controller
     {
         private readonly HttpClient httpClient;
@@ -30,26 +30,24 @@ namespace ReliableMessagingWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(this.serviceContext);
-            var proxyAddress = this.GetProxyAddress(serviceName);
-            var partitions = await this.fabricClient.QueryManager.GetPartitionListAsync(serviceName);
+            var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
+            var proxyAddress = GetProxyAddress(serviceName);
+            var partitions = await fabricClient.QueryManager.GetPartitionListAsync(serviceName);
             var result = new List<KeyValuePair<string, string>>();
 
             foreach (Partition partition in partitions)
             {
                 var proxyUrl = $"{proxyAddress}/api/State?PartitionKey={((Int64RangePartitionInformation)partition.PartitionInformation).LowKey}&PartitionKind=Int64Range";
 
-                using (HttpResponseMessage response = await this.httpClient.GetAsync(proxyUrl))
+                using var response = await httpClient.GetAsync(proxyUrl);
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                    {
-                        continue;
-                    }
-
-                    var responseText = await response.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(responseText);
-                    result.AddRange(data);
+                    continue;
                 }
+
+                var responseText = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(responseText);
+                result.AddRange(data);
             }
 
             var qry = result.Select(it => new
@@ -57,12 +55,30 @@ namespace ReliableMessagingWeb.Controllers
                 Name = it.Key,
                 Status = it.Value
             });
-            return this.Json(qry);
+            return Json(qry);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post()
+        {
+            var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
+            var proxyAddress = GetProxyAddress(serviceName);
+            var stupidKey = Guid.NewGuid().ToString();
+            var partitionKey = GetPartitionKey(stupidKey);
+            var proxyUrl = $"{proxyAddress}/api/State?PartitionKey={partitionKey}&PartitionKind=Int64Range";
+
+            using HttpResponseMessage response = await httpClient.PostAsync(proxyUrl, null);
+            return new ContentResult()
+            {
+                StatusCode = (int)response.StatusCode,
+                Content = await response.Content.ReadAsStringAsync()
+            };
         }
 
         private Uri GetProxyAddress(Uri serviceName)
-        {
-            return new Uri($"http://localhost:19081{serviceName.AbsolutePath}");
-        }
+            => new Uri($"http://localhost:19081{serviceName.AbsolutePath}");
+
+        private long GetPartitionKey(string name)
+            => Char.ToUpper(name.First()) - 'A';
     }
 }
