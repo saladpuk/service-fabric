@@ -56,5 +56,10 @@ namespace ReliableMessagingWeb
                             }))
             };
         }
+
+        internal static Uri GetReliableMessagingStateServiceName(ServiceContext context)
+        {
+            return new Uri($"{context.CodePackageActivationContext.ApplicationName}/ReliableMessagingState");
+        }
     }
 }

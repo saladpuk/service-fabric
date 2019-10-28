@@ -7,6 +7,8 @@ Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "ReliableMessaging", "Reliab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingWeb", "ReliableMessagingWeb\ReliableMessagingWeb.csproj", "{34D2367D-8C01-46EF-8877-7880CDA634E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingState", "ReliableMessagingState\ReliableMessagingState.csproj", "{6EA85216-E70B-4767-93E6-6C9C914EB975}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{34D2367D-8C01-46EF-8877-7880CDA634E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34D2367D-8C01-46EF-8877-7880CDA634E8}.Release|x64.ActiveCfg = Release|Any CPU
 		{34D2367D-8C01-46EF-8877-7880CDA634E8}.Release|x64.Build.0 = Release|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|x64.Build.0 = Debug|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|x64.ActiveCfg = Release|Any CPU
+		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
