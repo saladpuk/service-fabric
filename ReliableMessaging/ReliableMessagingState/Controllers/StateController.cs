@@ -24,15 +24,24 @@ namespace ReliableMessagingState.Controllers
             this.stateRepository = stateRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{ballY}/{positionY}/{height}")]
+        public async Task<IActionResult> Get(double ballY, double positionY, double height)
         {
-            var serverState = await stateRepository.Get();
-            if (serverState == null)
+            var random = new Random();
+            var result = ((ballY - (positionY + height / 2))) * 0.1;
+            result += random.NextDouble() * 2;
+            return Json(new CalculationResult
             {
-                await stateRepository.Upsert(new ServerState { IsLeftServerSending = true, IsServerActive = true });
-            }
-            return Json(serverState);
+                Y = result
+            });
+            //var actor = GetActor();
+            //var result = await actor.Calculate(ballY, positionY, height);
+            ////var serverState = await stateRepository.Get();
+            ////if (serverState == null)
+            ////{
+            ////    await stateRepository.Upsert(new ServerState { IsLeftServerSending = true, IsServerActive = true });
+            ////}
+            //return Json(result);
         }
 
         [HttpPost]

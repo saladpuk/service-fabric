@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ReliableMessaging.Shared;
+using ReliableMessagingServer.Interfaces;
 
 namespace ReliableMessagingWeb.Controllers
 {
@@ -28,17 +29,26 @@ namespace ReliableMessagingWeb.Controllers
             this.serviceContext = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        //[HttpGet("{ballY}/{positionY}/{height}")]
+        //public async Task<IActionResult> Get(double ballY, double positionY, double height)
+        //{
+        //    var random = new Random();
+        //    var result = ((ballY - (positionY + height / 2))) * 0.1;
+        //    result += random.NextDouble() * 2;
+        //    return Json(result);
+        //}
+
+        [HttpGet("{ballY}/{positionY}/{height}")]
+        public async Task<IActionResult> Get(double ballY, double positionY, double height)
         {
             var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
             var proxyAddress = GetProxyAddress(serviceName);
             var partitions = await fabricClient.QueryManager.GetPartitionListAsync(serviceName);
-            ServerState data = null;
+            CalculationResult data = null;
 
             foreach (Partition partition in partitions)
             {
-                var proxyUrl = $"{proxyAddress}/api/State?PartitionKey={((Int64RangePartitionInformation)partition.PartitionInformation).LowKey}&PartitionKind=Int64Range";
+                var proxyUrl = $"{proxyAddress}/api/State/{ballY}/{positionY}/{height}?PartitionKey={((Int64RangePartitionInformation)partition.PartitionInformation).LowKey}&PartitionKind=Int64Range";
 
                 using var response = await httpClient.GetAsync(proxyUrl);
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
@@ -47,15 +57,12 @@ namespace ReliableMessagingWeb.Controllers
                 }
 
                 var responseText = await response.Content.ReadAsStringAsync();
-                data = JsonConvert.DeserializeObject<ServerState>(responseText);
+                data = JsonConvert.DeserializeObject<CalculationResult>(responseText);
             }
 
-            var sendingState = data.IsLeftServerSending ? "left2right" : "right2left";
-            var svStatus = data.IsServerActive ? string.Empty : "down";
-            return Json(new
-            {
-                ServerStatus = $"{sendingState}{svStatus}"
-            });
+            //var sendingState = data.IsLeftServerSending ? "left2right" : "right2left";
+            //var svStatus = data.IsServerActive ? string.Empty : "down";
+            return Json(data.Y);
         }
 
         [HttpPost]

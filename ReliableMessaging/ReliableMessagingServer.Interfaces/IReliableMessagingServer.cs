@@ -18,5 +18,11 @@ namespace ReliableMessagingServer.Interfaces
     public interface IReliableMessagingServer : IActor
     {
         Task<ServerState> AssignTaskAsync(ServerState serverState);
+        Task<CalculationResult> Calculate(double ballY, double positionY, double height);
+    }
+
+    public class CalculationResult
+    {
+        public double Y { get; set; }
     }
 }

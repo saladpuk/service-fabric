@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReliableMessaging.Shared\ReliableMessaging.Shared.csproj" />
+    <ProjectReference Include="..\ReliableMessagingServer.Interfaces\ReliableMessagingServer.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -57,5 +57,16 @@ namespace ReliableMessagingServer
             serverState.IsLeftServerSending = !serverState.IsLeftServerSending;
             return Task.FromResult(serverState);
         }
+
+        Task<CalculationResult> IReliableMessagingServer.Calculate(double ballY, double positionY, double height)
+        {
+            var random = new Random();
+            var result = ((ballY - (positionY + height / 2))) * 0.1;
+            result += random.NextDouble() * 2;
+            return Task.FromResult(new CalculationResult
+            {
+                Y = result
+            });
+        }
     }
 }

@@ -1,50 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Service Fabric Reliable Messaging";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pong Game JavaScript</title>
+    <style>
+        body {
+            background-color: dimgray;
+        }
 
-<div ng-controller="MessageAppController" ng-init="refresh()">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2 text-center">
-                <h2>Service Fabric Voting Sample</h2>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <form class="col-xs-12 center-block">
-                    <button id="btnAdd" class="btn btn-default" ng-click="start()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        Start
-                    </button>
-                </form>
-            </div>
-            <div class="col-xs-8 col-xs-offset-2">
-                <form class="col-xs-12 center-block">
-                    <button id="btnAdd" class="btn btn-default" ng-click="refresh()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        Refresh
-                    </button>
-                </form>
-            </div>
-            <div class="col-xs-8 col-xs-offset-2">
-                <form class="col-xs-12 center-block">
-                    <button id="btnAdd" class="btn btn-default" ng-click="toggleAutoRefresh()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        {{ autoRefreshState }}
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <hr />
-
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <div class="row top-buffer">
-                    <img src="/assets/{{serverStatus.serverStatus}}.gif" />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        #pong {
+            border: 2px solid #FFF;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas ng-controller="MessageAppController" ng-init="refresh()" id="pong" width="600" height="400"></canvas>
+</body>
+</html>
