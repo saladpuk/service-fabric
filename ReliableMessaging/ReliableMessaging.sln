@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "ReliableMessaging", "ReliableMessaging\ReliableMessaging.sfproj", "{BA3E49B9-89B5-4A10-9F6D-C290BD9021DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingWeb", "ReliableMessagingWeb\ReliableMessagingWeb.csproj", "{34D2367D-8C01-46EF-8877-7880CDA634E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingWeb", "ReliableMessagingWeb\ReliableMessagingWeb.csproj", "{34D2367D-8C01-46EF-8877-7880CDA634E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingState", "ReliableMessagingState\ReliableMessagingState.csproj", "{6EA85216-E70B-4767-93E6-6C9C914EB975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingState", "ReliableMessagingState\ReliableMessagingState.csproj", "{6EA85216-E70B-4767-93E6-6C9C914EB975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessaging.Shared", "ReliableMessaging.Shared\ReliableMessaging.Shared.csproj", "{455F6253-E741-4C19-B4B8-D14F89A38752}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|x64.ActiveCfg = Release|Any CPU
 		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|x64.Build.0 = Release|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|x64.Build.0 = Debug|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|x64.ActiveCfg = Release|Any CPU
+		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,6 +11,7 @@ using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.ServiceFabric.Data;
+using ReliableMessagingState.Repository;
 
 namespace ReliableMessagingState
 {
@@ -41,7 +42,8 @@ namespace ReliableMessagingState
                                     .ConfigureServices(
                                         services => services
                                             .AddSingleton<StatefulServiceContext>(serviceContext)
-                                            .AddSingleton<IReliableStateManager>(this.StateManager))
+                                            .AddSingleton<IReliableStateManager>(this.StateManager)
+                                            .AddSingleton<IServerStateRepository,ServerStateRepository>())
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)

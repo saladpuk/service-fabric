@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ReliableMessaging.Shared;
 
 namespace ReliableMessagingWeb.Controllers
 {
@@ -33,8 +34,8 @@ namespace ReliableMessagingWeb.Controllers
             var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
             var proxyAddress = GetProxyAddress(serviceName);
             var partitions = await fabricClient.QueryManager.GetPartitionListAsync(serviceName);
-            var result = new List<KeyValuePair<int, string>>();
-
+            var result = new List<ServerState>();
+            
             foreach (Partition partition in partitions)
             {
                 var proxyUrl = $"{proxyAddress}/api/State?PartitionKey={((Int64RangePartitionInformation)partition.PartitionInformation).LowKey}&PartitionKind=Int64Range";
@@ -46,16 +47,11 @@ namespace ReliableMessagingWeb.Controllers
                 }
 
                 var responseText = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<KeyValuePair<int, string>>>(responseText);
+                var data = JsonConvert.DeserializeObject<List<ServerState>>(responseText);
                 result.AddRange(data);
             }
 
-            var qry = result.Select(it => new
-            {
-                Name = it.Key,
-                Status = it.Value
-            });
-            return Json(qry);
+            return Json(result);
         }
 
         [HttpPost]
