@@ -37,4 +37,10 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         }
     }, 700);
 
+    setInterval(() => {
+        if ($scope.autoRefreshStateEnable) {
+            $scope.start();
+        }
+    }, 5000);
+
 }]);
