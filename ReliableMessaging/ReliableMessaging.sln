@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingWeb", "Rel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingState", "ReliableMessagingState\ReliableMessagingState.csproj", "{6EA85216-E70B-4767-93E6-6C9C914EB975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessaging.Shared", "ReliableMessaging.Shared\ReliableMessaging.Shared.csproj", "{455F6253-E741-4C19-B4B8-D14F89A38752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessaging.Shared", "ReliableMessaging.Shared\ReliableMessaging.Shared.csproj", "{455F6253-E741-4C19-B4B8-D14F89A38752}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingServer", "ReliableMessagingServer\ReliableMessagingServer.csproj", "{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingServer.Interfaces", "ReliableMessagingServer.Interfaces\ReliableMessagingServer.Interfaces.csproj", "{445A6222-8147-4589-9CAB-50DE18B25306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,22 @@ Global
 		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|Any CPU.Build.0 = Release|Any CPU
 		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|x64.ActiveCfg = Release|Any CPU
 		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|x64.Build.0 = Release|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Debug|x64.Build.0 = Debug|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Release|x64.ActiveCfg = Release|Any CPU
+		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Release|x64.Build.0 = Release|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Debug|x64.Build.0 = Debug|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Release|Any CPU.Build.0 = Release|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Release|x64.ActiveCfg = Release|Any CPU
+		{445A6222-8147-4589-9CAB-50DE18B25306}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

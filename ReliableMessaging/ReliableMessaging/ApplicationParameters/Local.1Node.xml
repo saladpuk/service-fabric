@@ -7,5 +7,8 @@
     <Parameter Name="ReliableMessagingState_TargetReplicaSetSize" Value="1" />
     <Parameter Name="ReliableMessagingWeb_ASPNETCORE_ENVIRONMENT" Value="Development" />
     <Parameter Name="ReliableMessagingWeb_InstanceCount" Value="1" />
+    <Parameter Name="ReliableMessagingServerActorService_PartitionCount" Value="1" />
+    <Parameter Name="ReliableMessagingServerActorService_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="ReliableMessagingServerActorService_MinReplicaSetSize" Value="1" />
   </Parameters>
 </Application>

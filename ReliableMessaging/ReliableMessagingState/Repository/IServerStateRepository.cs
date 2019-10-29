@@ -9,7 +9,6 @@ namespace ReliableMessagingState.Repository
     public interface IServerStateRepository
     {
         Task<IEnumerable<ServerState>> Get();
-        Task Create(ServerState serverState);
-        Task Update(int id);
+        Task Upsert(ServerState serverState);
     }
 }

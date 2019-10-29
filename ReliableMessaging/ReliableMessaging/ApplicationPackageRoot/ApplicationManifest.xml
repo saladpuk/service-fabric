@@ -7,10 +7,16 @@
     <Parameter Name="ReliableMessagingState_TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="ReliableMessagingWeb_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="ReliableMessagingWeb_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="ReliableMessagingServerActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="ReliableMessagingServerActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ReliableMessagingServerActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="ReliableMessagingServerPkg" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="ReliableMessagingStatePkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />
@@ -40,6 +46,11 @@
       <StatelessService ServiceTypeName="ReliableMessagingWebType" InstanceCount="[ReliableMessagingWeb_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
+    </Service>
+    <Service Name="ReliableMessagingServerActorService" GeneratedIdRef="1e95325e-f44c-4c36-97ce-b6eb4da501a4|Persisted">
+      <StatefulService ServiceTypeName="ReliableMessagingServerActorServiceType" TargetReplicaSetSize="[ReliableMessagingServerActorService_TargetReplicaSetSize]" MinReplicaSetSize="[ReliableMessagingServerActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ReliableMessagingServerActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
     </Service>
   </DefaultServices>
 </ApplicationManifest>

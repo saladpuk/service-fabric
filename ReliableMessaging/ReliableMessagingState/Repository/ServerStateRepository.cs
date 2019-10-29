@@ -39,32 +39,13 @@ namespace ReliableMessagingState.Repository
             return result.Select(it => it.Value);
         }
 
-        public async Task Create(ServerState serverState)
+        public async Task Upsert(ServerState serverState)
         {
             var serverStatusDictionary = await stateManager
                .GetOrAddAsync<IReliableDictionary<int, ServerState>>("serverStatus");
 
             using var tx = stateManager.CreateTransaction();
-            await serverStatusDictionary.AddAsync(tx, serverState.Id, serverState);
-            await tx.CommitAsync();
-        }
-
-        public async Task Update(int id)
-        {
-            var serverStatusDictionary = await stateManager
-               .GetOrAddAsync<IReliableDictionary<int, ServerState>>("serverStatus");
-
-            using var tx = stateManager.CreateTransaction();
-            await serverStatusDictionary.AddOrUpdateAsync(tx, id, new ServerState(), (key, old) =>
-            {
-                switch (old.Status)
-                {
-                    case "sending": old.Status = "idle"; break;
-                    case "idle": old.Status = "sending"; break;
-                    default: break;
-                }
-                return old;
-            });
+            await serverStatusDictionary.AddOrUpdateAsync(tx, serverState.Id, serverState, (key, old) => serverState);
             await tx.CommitAsync();
         }
 
