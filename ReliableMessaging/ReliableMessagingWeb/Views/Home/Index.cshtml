@@ -27,14 +27,22 @@
                     </button>
                 </form>
             </div>
+            <div class="col-xs-8 col-xs-offset-2">
+                <form class="col-xs-12 center-block">
+                    <button id="btnAdd" class="btn btn-default" ng-click="toggleAutoRefresh()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        {{ autoRefreshState }}
+                    </button>
+                </form>
+            </div>
         </div>
 
         <hr />
 
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
-                <div class="row top-buffer" ng-repeat="it in serverStatus.data">
-                    <img src="/assets/{{it.status}}.gif" />
+                <div class="row top-buffer">
+                    <img src="/assets/{{serverStatus.serverStatus}}.gif" />
                 </div>
             </div>
         </div>

@@ -54,7 +54,7 @@ namespace ReliableMessagingServer
         /// <returns></returns>
         Task<ServerState> IReliableMessagingServer.AssignTaskAsync(ServerState serverState)
         {
-            serverState.Status = serverState.Status == "idle" ? "sending" : "idle";
+            serverState.IsLeftServerSending = !serverState.IsLeftServerSending;
             return Task.FromResult(serverState);
         }
     }

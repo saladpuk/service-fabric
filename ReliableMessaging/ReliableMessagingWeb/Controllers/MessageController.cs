@@ -34,8 +34,8 @@ namespace ReliableMessagingWeb.Controllers
             var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
             var proxyAddress = GetProxyAddress(serviceName);
             var partitions = await fabricClient.QueryManager.GetPartitionListAsync(serviceName);
-            var result = new List<ServerState>();
-            
+            ServerState data = null;
+
             foreach (Partition partition in partitions)
             {
                 var proxyUrl = $"{proxyAddress}/api/State?PartitionKey={((Int64RangePartitionInformation)partition.PartitionInformation).LowKey}&PartitionKind=Int64Range";
@@ -47,11 +47,15 @@ namespace ReliableMessagingWeb.Controllers
                 }
 
                 var responseText = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<ServerState>>(responseText);
-                result.AddRange(data);
+                data = JsonConvert.DeserializeObject<ServerState>(responseText);
             }
 
-            return Json(result);
+            var sendingState = data.IsLeftServerSending ? "left2right" : "right2left";
+            var svStatus = data.IsServerActive ? string.Empty : "down";
+            return Json(new
+            {
+                ServerStatus = $"{sendingState}{svStatus}"
+            });
         }
 
         [HttpPost]

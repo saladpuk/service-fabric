@@ -27,25 +27,36 @@ namespace ReliableMessagingState.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await stateRepository.Get();
-            return Json(result);
+            var serverState = await stateRepository.Get();
+            if (serverState == null)
+            {
+                await stateRepository.Upsert(new ServerState { IsLeftServerSending = true, IsServerActive = true });
+            }
+            return Json(serverState);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post()
         {
-            var now = DateTime.Now;
-            var all = await stateRepository.Get();
-            if (all.Any() == false)
+            var serverState = await stateRepository.Get();
+            if (serverState == null)
             {
-                await stateRepository.Upsert(new ServerState { Id = 1, LastUpdatedDate = now, Status = "idle" });
+                return new OkResult();
             }
-            else
+
+            try
             {
-                var currentServerState = all.First();
                 var actor = GetActor();
-                var newServerState = await actor.AssignTaskAsync(currentServerState);
-                await stateRepository.Upsert(newServerState);
+                serverState = await actor.AssignTaskAsync(serverState);
+                serverState.IsServerActive = true;
+            }
+            catch (Exception)
+            {
+                serverState.IsServerActive = false;
+            }
+            finally
+            {
+                await stateRepository.Upsert(serverState);
             }
             return new OkResult();
         }

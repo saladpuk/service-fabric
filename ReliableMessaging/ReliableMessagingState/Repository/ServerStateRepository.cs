@@ -20,7 +20,7 @@ namespace ReliableMessagingState.Repository
 
         #region IServerStateRepository
 
-        public async Task<IEnumerable<ServerState>> Get()
+        public async Task<ServerState> Get()
         {
             var ct = new CancellationToken();
             var serverStatusDictionary = await stateManager
@@ -36,7 +36,7 @@ namespace ReliableMessagingState.Repository
                 result.Add(enumerator.Current);
             }
 
-            return result.Select(it => it.Value);
+            return result.Select(it => it.Value).FirstOrDefault();
         }
 
         public async Task Upsert(ServerState serverState)
@@ -45,7 +45,7 @@ namespace ReliableMessagingState.Repository
                .GetOrAddAsync<IReliableDictionary<int, ServerState>>("serverStatus");
 
             using var tx = stateManager.CreateTransaction();
-            await serverStatusDictionary.AddOrUpdateAsync(tx, serverState.Id, serverState, (key, old) => serverState);
+            await serverStatusDictionary.AddOrUpdateAsync(tx, 1, serverState, (key, old) => serverState);
             await tx.CommitAsync();
         }
 
