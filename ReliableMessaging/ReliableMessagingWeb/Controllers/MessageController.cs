@@ -8,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.ServiceFabric.Actors;
+using Microsoft.ServiceFabric.Actors.Client;
 using Newtonsoft.Json;
 using ReliableMessaging.Shared;
 using ReliableMessagingServer.Interfaces;
@@ -18,74 +20,19 @@ namespace ReliableMessagingWeb.Controllers
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
-        private readonly HttpClient httpClient;
-        private readonly FabricClient fabricClient;
-        private readonly StatelessServiceContext serviceContext;
-
-        public MessageController(HttpClient httpClient, StatelessServiceContext context, FabricClient fabricClient)
-        {
-            this.fabricClient = fabricClient;
-            this.httpClient = httpClient;
-            this.serviceContext = context;
-        }
-
-        //[HttpGet("{ballY}/{positionY}/{height}")]
-        //public async Task<IActionResult> Get(double ballY, double positionY, double height)
-        //{
-        //    var random = new Random();
-        //    var result = ((ballY - (positionY + height / 2))) * 0.1;
-        //    result += random.NextDouble() * 2;
-        //    return Json(result);
-        //}
-
         [HttpGet("{ballY}/{positionY}/{height}")]
         public async Task<IActionResult> Get(double ballY, double positionY, double height)
         {
-            var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
-            var proxyAddress = GetProxyAddress(serviceName);
-            var partitions = await fabricClient.QueryManager.GetPartitionListAsync(serviceName);
-            CalculationResult data = null;
-
-            foreach (Partition partition in partitions)
-            {
-                var proxyUrl = $"{proxyAddress}/api/State/{ballY}/{positionY}/{height}?PartitionKey={((Int64RangePartitionInformation)partition.PartitionInformation).LowKey}&PartitionKind=Int64Range";
-
-                using var response = await httpClient.GetAsync(proxyUrl);
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    continue;
-                }
-
-                var responseText = await response.Content.ReadAsStringAsync();
-                data = JsonConvert.DeserializeObject<CalculationResult>(responseText);
-            }
-
-            //var sendingState = data.IsLeftServerSending ? "left2right" : "right2left";
-            //var svStatus = data.IsServerActive ? string.Empty : "down";
-            return Json(data.Y);
+            var actor = GetActor();
+            var result = await actor.Calculate(ballY, positionY, height);
+            return Json(result.Y);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post()
+        private IReliableMessagingServer GetActor()
         {
-            var serviceName = ReliableMessagingWeb.GetReliableMessagingStateServiceName(serviceContext);
-            var proxyAddress = GetProxyAddress(serviceName);
-            var stupidKey = Guid.NewGuid().ToString();
-            var partitionKey = GetPartitionKey(stupidKey);
-            var proxyUrl = $"{proxyAddress}/api/State?PartitionKey={partitionKey}&PartitionKind=Int64Range";
-
-            using HttpResponseMessage response = await httpClient.PostAsync(proxyUrl, null);
-            return new ContentResult()
-            {
-                StatusCode = (int)response.StatusCode,
-                Content = await response.Content.ReadAsStringAsync()
-            };
+            return ActorProxy.Create<IReliableMessagingServer>(
+                ActorId.CreateRandom(),
+                new Uri("fabric:/ReliableMessaging/ReliableMessagingServerActorService"));
         }
-
-        private Uri GetProxyAddress(Uri serviceName)
-            => new Uri($"http://localhost:19081{serviceName.AbsolutePath}");
-
-        private long GetPartitionKey(string name)
-            => Char.ToUpper(name.First()) - 'A';
     }
 }
