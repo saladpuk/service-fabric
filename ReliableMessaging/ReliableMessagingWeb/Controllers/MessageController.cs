@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Client;
 using Newtonsoft.Json;
-using ReliableMessaging.Shared;
 using ReliableMessagingServer.Interfaces;
 
 namespace ReliableMessagingWeb.Controllers
@@ -24,8 +23,13 @@ namespace ReliableMessagingWeb.Controllers
         public async Task<IActionResult> Get(double ballY, double positionY, double height)
         {
             var actor = GetActor();
-            var result = await actor.Calculate(ballY, positionY, height);
-            return Json(result.Y);
+            var result = await actor.CalculatePosition(new CalculationRequest
+            {
+                BallPositionY = ballY,
+                PlayerPositionY = positionY,
+                PlayerHeight = height
+            });
+            return Json(result.MovementPoistionY);
         }
 
         private IReliableMessagingServer GetActor()

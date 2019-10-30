@@ -7,7 +7,6 @@ using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Actors.Client;
 using ReliableMessagingServer.Interfaces;
-using ReliableMessaging.Shared;
 
 namespace ReliableMessagingServer
 {
@@ -48,24 +47,14 @@ namespace ReliableMessagingServer
             return this.StateManager.TryAddStateAsync("count", 0);
         }
 
-        /// <summary>
-        /// TODO: Replace with your own actor method.
-        /// </summary>
-        /// <returns></returns>
-        Task<ServerState> IReliableMessagingServer.AssignTaskAsync(ServerState serverState)
-        {
-            serverState.IsLeftServerSending = !serverState.IsLeftServerSending;
-            return Task.FromResult(serverState);
-        }
-
-        Task<CalculationResult> IReliableMessagingServer.Calculate(double ballY, double positionY, double height)
+        Task<CalculationResponse> IReliableMessagingServer.CalculatePosition(CalculationRequest req)
         {
             var random = new Random();
-            var result = ((ballY - (positionY + height / 2))) * 0.1;
-            result += random.NextDouble() * 2;
-            return Task.FromResult(new CalculationResult
+            var movement = (req.BallPositionY - (req.PlayerPositionY + req.PlayerHeight / 2)) * 0.1;
+            movement += random.NextDouble() * 3;
+            return Task.FromResult(new CalculationResponse
             {
-                Y = result
+                MovementPoistionY = movement
             });
         }
     }

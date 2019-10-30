@@ -33,7 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReliableMessagingServer\ReliableMessagingServer.csproj" />
-    <ProjectReference Include="..\ReliableMessagingState\ReliableMessagingState.csproj" />
     <ProjectReference Include="..\ReliableMessagingWeb\ReliableMessagingWeb.csproj">
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>

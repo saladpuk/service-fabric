@@ -3,27 +3,27 @@ app.run(function () { });
 
 app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeout', function ($rootScope, $scope, $http, $timeout) {
 
-    $scope.refresh = function() {
+    $scope.refresh = function (paddleTarget) {
         $http({
             method: "GET",
-            url: 'api/Message/' + ball.y + '/' + user.y + '/' + user.height + '?c=' + new Date().getTime(),
-            timeout: 1300
+            url: 'api/Message/' + ball.y + '/' + paddleTarget.y + '/' + paddleTarget.height + '?c=' + new Date().getTime(),
+            timeout: 777
         })
             .then(
                 function mySuccess(data) {
-                    var z = user.y + data.data;
-                    if (z > -50 && z <= 350) {
-                        user.y = z;
+                    var newY = paddleTarget.y + data.data;
+                    if (newY > -50 && newY <= 350) {
+                        paddleTarget.y = newY;
                     }
                 },
-                function myError(response) {
-                    console.log('error');
+                function onError(response) {
+                    //console.log('Time Out: ' + paddleTarget.name);
                 });
     };
 
     setInterval(() => {
-        //user.y = com.y;
-        $scope.refresh();
+        let pTarget = (ball.x < canvas.width * 0.65) ? leftPaddle : rightPaddle;
+        $scope.refresh(pTarget);
     }, 10);
 
     // select canvas element
@@ -32,18 +32,6 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
     // getContext of canvas = methods and properties to draw and do a lot of thing to the canvas
     const ctx = canvas.getContext('2d');
 
-    // load sounds
-    let hit = new Audio();
-    let wall = new Audio();
-    let userScore = new Audio();
-    let comScore = new Audio();
-
-    hit.src = "sounds/hit.mp3";
-    wall.src = "sounds/wall.mp3";
-    comScore.src = "sounds/comScore.mp3";
-    userScore.src = "sounds/userScore.mp3";
-
-    // Ball object
     const ball = {
         x: canvas.width / 2,
         y: canvas.height / 2,
@@ -54,27 +42,26 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         color: "WHITE"
     };
 
-    // User Paddle
-    const user = {
-        x: 0, // left side of canvas
-        y: (canvas.height - 100) / 2, // -100 the height of paddle
+    const leftPaddle = {
+        x: 0,
+        y: (canvas.height - 100) / 2,
         width: 10,
         height: 100,
         score: 0,
-        color: "WHITE"
+        color: "WHITE",
+        name: "Left Paddle"
     };
 
-    // COM Paddle
-    const com = {
-        x: canvas.width - 10, // - width of paddle
-        y: (canvas.height - 100) / 2, // -100 the height of paddle
+    const rightPaddle = {
+        x: canvas.width - 10,
+        y: (canvas.height - 100) / 2,
         width: 10,
         height: 100,
         score: 0,
-        color: "WHITE"
+        color: "WHITE",
+        name: "Right Paddle"
     };
 
-    // NET
     const net = {
         x: (canvas.width - 2) / 2,
         y: 0,
@@ -97,15 +84,6 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         ctx.closePath();
         ctx.fill();
     }
-
-    // listening to the mouse
-    //canvas.addEventListener("mousemove", getMousePos);
-
-    //function getMousePos(evt) {
-    //    let rect = canvas.getBoundingClientRect();
-
-    //    user.y = evt.clientY - rect.top - user.height / 2;
-    //}
 
     // when COM or USER scores, we reset the ball
     function resetBall() {
@@ -144,19 +122,13 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         return p.left < b.right && p.top < b.bottom && p.right > b.left && p.bottom > b.top;
     }
 
-    var lastedY = 0;
-    // update function, the function that does all calculations
     function update() {
-
-
-        // change the score of players, if the ball goes to the left "ball.x<0" computer win, else if "ball.x > canvas.width" the user win
+        // change the score
         if (ball.x - ball.radius < 0) {
-            com.score++;
-            comScore.play();
+            rightPaddle.score++;
             resetBall();
         } else if (ball.x + ball.radius > canvas.width) {
-            user.score++;
-            userScore.play();
+            leftPaddle.score++;
             resetBall();
         }
 
@@ -164,42 +136,32 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         ball.x += ball.velocityX;
         ball.y += ball.velocityY;
 
-        // computer plays for itself, and we must be able to beat it
-        // simple AI
-        com.y += ((ball.y - (com.y + com.height / 2))) * 0.1;
-
         // when the ball collides with bottom and top walls we inverse the y velocity.
         if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
             ball.velocityY = -ball.velocityY;
-            wall.play();
         }
 
-        // we check if the paddle hit the user or the com paddle
-        let player = (ball.x + ball.radius < canvas.width / 2) ? user : com;
+        // we check if the paddle hit the left paddle or the right paddle
+        let selectedPaddle = (ball.x + ball.radius < canvas.width / 2) ? leftPaddle : rightPaddle;
 
         // if the ball hits a paddle
-        if (collision(ball, player)) {
-            // play sound
-            hit.play();
+        if (collision(ball, selectedPaddle)) {
             // we check where the ball hits the paddle
-            let collidePoint = (ball.y - (player.y + player.height / 2));
+            let collidePoint = (ball.y - (selectedPaddle.y + selectedPaddle.height / 2));
             // normalize the value of collidePoint, we need to get numbers between -1 and 1.
-            // -player.height/2 < collide Point < player.height/2
-            collidePoint = collidePoint / (player.height / 2);
+            // -selectedPaddle.height/2 < collide Point < selectedPaddle.height/2
+            collidePoint = collidePoint / (selectedPaddle.height / 2);
 
             // when the ball hits the top of a paddle we want the ball, to take a -45degees angle
             // when the ball hits the center of the paddle we want the ball to take a 0degrees angle
             // when the ball hits the bottom of the paddle we want the ball to take a 45degrees
             // Math.PI/4 = 45degrees
-            let angleRad = (Math.PI / 4) * collidePoint;
+            let angleRad = Math.PI / 4 * collidePoint;
 
             // change the X and Y velocity direction
             let direction = (ball.x + ball.radius < canvas.width / 2) ? 1 : -1;
             ball.velocityX = direction * ball.speed * Math.cos(angleRad);
             ball.velocityY = ball.speed * Math.sin(angleRad);
-
-            // speed up the ball everytime a paddle hits it.
-            ball.speed += 0.1;
         }
     }
 
@@ -210,19 +172,19 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         drawRect(0, 0, canvas.width, canvas.height, "#000");
 
         // draw the user score to the left
-        drawText(user.score, canvas.width / 4, canvas.height / 5);
+        drawText(leftPaddle.score, canvas.width / 4, canvas.height / 5);
 
         // draw the COM score to the right
-        drawText(com.score, 3 * canvas.width / 4, canvas.height / 5);
+        drawText(rightPaddle.score, 3 * canvas.width / 4, canvas.height / 5);
 
         // draw the net
         drawNet();
 
         // draw the user's paddle
-        drawRect(user.x, user.y, user.width, user.height, user.color);
+        drawRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height, leftPaddle.color);
 
         // draw the COM's paddle
-        drawRect(com.x, com.y, com.width, com.height, com.color);
+        drawRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height, rightPaddle.color);
 
         // draw the ball
         drawArc(ball.x, ball.y, ball.radius, ball.color);
@@ -232,11 +194,11 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         update();
         render();
     }
+
     // number of frames per second
-    let framePerSecond = 50;
+    let framePerSecond = 60;
 
-    //call the game function 50 times every 1 Sec
+    //call the game function by FPS
     let loop = setInterval(game, 1000 / framePerSecond);
-
 
 }]);

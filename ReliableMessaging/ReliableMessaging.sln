@@ -7,13 +7,9 @@ Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "ReliableMessaging", "Reliab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingWeb", "ReliableMessagingWeb\ReliableMessagingWeb.csproj", "{34D2367D-8C01-46EF-8877-7880CDA634E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingState", "ReliableMessagingState\ReliableMessagingState.csproj", "{6EA85216-E70B-4767-93E6-6C9C914EB975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingServer", "ReliableMessagingServer\ReliableMessagingServer.csproj", "{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessaging.Shared", "ReliableMessaging.Shared\ReliableMessaging.Shared.csproj", "{455F6253-E741-4C19-B4B8-D14F89A38752}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingServer", "ReliableMessagingServer\ReliableMessagingServer.csproj", "{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessagingServer.Interfaces", "ReliableMessagingServer.Interfaces\ReliableMessagingServer.Interfaces.csproj", "{445A6222-8147-4589-9CAB-50DE18B25306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingServer.Interfaces", "ReliableMessagingServer.Interfaces\ReliableMessagingServer.Interfaces.csproj", "{445A6222-8147-4589-9CAB-50DE18B25306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,22 +35,6 @@ Global
 		{34D2367D-8C01-46EF-8877-7880CDA634E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34D2367D-8C01-46EF-8877-7880CDA634E8}.Release|x64.ActiveCfg = Release|Any CPU
 		{34D2367D-8C01-46EF-8877-7880CDA634E8}.Release|x64.Build.0 = Release|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Debug|x64.Build.0 = Debug|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|x64.ActiveCfg = Release|Any CPU
-		{6EA85216-E70B-4767-93E6-6C9C914EB975}.Release|x64.Build.0 = Release|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Debug|x64.Build.0 = Debug|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|Any CPU.Build.0 = Release|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|x64.ActiveCfg = Release|Any CPU
-		{455F6253-E741-4C19-B4B8-D14F89A38752}.Release|x64.Build.0 = Release|Any CPU
 		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C64B0638-F2B0-4977-AAB1-B8D5C4E55B1E}.Debug|x64.ActiveCfg = Debug|Any CPU
