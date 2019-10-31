@@ -12,7 +12,7 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
             .then(
                 function mySuccess(data) {
                     var newY = paddleTarget.y + data.data;
-                    if (newY > -50 && newY <= 350) {
+                    if (newY > 0 && newY <= 300) {
                         paddleTarget.y = newY;
                     }
                 },
@@ -122,6 +122,7 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         return p.left < b.right && p.top < b.bottom && p.right > b.left && p.bottom > b.top;
     }
 
+    var isLockDirection = false;
     function update() {
         // change the score
         if (ball.x - ball.radius < 0) {
@@ -137,8 +138,14 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         ball.y += ball.velocityY;
 
         // when the ball collides with bottom and top walls we inverse the y velocity.
-        if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
-            ball.velocityY = -ball.velocityY;
+        if (ball.y - ball.radius =< 0 || ball.y + ball.radius >= canvas.height) {
+            if (isLockDirection === false) {
+                ball.velocityY = -ball.velocityY;
+                isLockDirection = true;
+            }
+        }
+        else {
+            isLockDirection = false;
         }
 
         // we check if the paddle hit the left paddle or the right paddle
