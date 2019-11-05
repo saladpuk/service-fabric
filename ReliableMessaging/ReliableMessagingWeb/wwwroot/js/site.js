@@ -3,6 +3,8 @@ app.run(function () { });
 
 app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeout', function ($rootScope, $scope, $http, $timeout) {
 
+    var isPaddleReady = false;
+
     $scope.refresh = function (paddleTarget) {
         $http({
             method: "GET",
@@ -11,12 +13,14 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         })
             .then(
                 function mySuccess(data) {
+                    isPaddleReady = true;
                     var newY = paddleTarget.y + data.data;
                     if (newY > 0 && newY <= 300) {
                         paddleTarget.y = newY;
                     }
                 },
                 function onError(response) {
+                    isPaddleReady = false;
                     //console.log('Time Out: ' + paddleTarget.name);
                 });
     };
@@ -138,7 +142,7 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         ball.y += ball.velocityY;
 
         // when the ball collides with bottom and top walls we inverse the y velocity.
-        if (ball.y - ball.radius =< 0 || ball.y + ball.radius >= canvas.height) {
+        if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= canvas.height) {
             if (isLockDirection === false) {
                 ball.velocityY = -ball.velocityY;
                 isLockDirection = true;
@@ -198,8 +202,10 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
     }
 
     function game() {
-        update();
-        render();
+        if (isPaddleReady) {
+            update();
+            render();
+        }
     }
 
     // number of frames per second
