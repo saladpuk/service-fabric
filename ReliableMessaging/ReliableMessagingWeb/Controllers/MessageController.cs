@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Client;
 using Newtonsoft.Json;
+using ReliableMessaging.Shared;
 using ReliableMessagingServer.Interfaces;
 
 namespace ReliableMessagingWeb.Controllers

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReliableMessagingServer.Interfaces
+namespace ReliableMessaging.Shared
 {
     public class CalculationRequest
     {

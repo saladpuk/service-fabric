@@ -7,6 +7,7 @@ using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Actors.Client;
 using ReliableMessagingServer.Interfaces;
+using ReliableMessaging.Shared;
 
 namespace ReliableMessagingServer
 {
