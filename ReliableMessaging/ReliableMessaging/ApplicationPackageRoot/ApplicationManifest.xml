@@ -6,10 +6,22 @@
     <Parameter Name="ReliableMessagingServerActorService_PartitionCount" DefaultValue="10" />
     <Parameter Name="ReliableMessagingServerActorService_MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="ReliableMessagingServerActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="LeftPaddleActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="LeftPaddleActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="LeftPaddleActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="RightPaddleActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="RightPaddleActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="RightPaddleActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="RightPaddlePkg" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="LeftPaddlePkg" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="ReliableMessagingServerPkg" ServiceManifestVersion="1.0.0" />
   </ServiceManifestImport>
@@ -34,6 +46,16 @@
     <Service Name="ReliableMessagingServerActorService" GeneratedIdRef="1e95325e-f44c-4c36-97ce-b6eb4da501a4|Persisted">
       <StatefulService ServiceTypeName="ReliableMessagingServerActorServiceType" TargetReplicaSetSize="[ReliableMessagingServerActorService_TargetReplicaSetSize]" MinReplicaSetSize="[ReliableMessagingServerActorService_MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="[ReliableMessagingServerActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="LeftPaddleActorService" GeneratedIdRef="067ddba9-82a4-4399-9a19-3233af68d316|Persisted">
+      <StatefulService ServiceTypeName="LeftPaddleActorServiceType" TargetReplicaSetSize="[LeftPaddleActorService_TargetReplicaSetSize]" MinReplicaSetSize="[LeftPaddleActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[LeftPaddleActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="RightPaddleActorService" GeneratedIdRef="faebab97-8d8a-45a4-918b-9e7de9158914|Persisted">
+      <StatefulService ServiceTypeName="RightPaddleActorServiceType" TargetReplicaSetSize="[RightPaddleActorService_TargetReplicaSetSize]" MinReplicaSetSize="[RightPaddleActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[RightPaddleActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>
   </DefaultServices>

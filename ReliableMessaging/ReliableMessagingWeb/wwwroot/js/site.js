@@ -3,12 +3,14 @@ app.run(function () { });
 
 app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeout', function ($rootScope, $scope, $http, $timeout) {
 
+    console.log('Version 2.0');
+
     var isPaddleReady = false;
 
-    $scope.refresh = function (paddleTarget) {
+    $scope.refresh = function (paddleTarget, tag) {
         $http({
             method: "GET",
-            url: 'api/Message/' + ball.y + '/' + paddleTarget.y + '/' + paddleTarget.height + '?c=' + new Date().getTime(),
+            url: 'api/Message/' + ball.y + '/' + paddleTarget.y + '/' + paddleTarget.height + '/' + tag + '?c=' + new Date().getTime(),
             timeout: 777
         })
             .then(
@@ -26,8 +28,10 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
     };
 
     setInterval(() => {
-        let pTarget = (ball.x < canvas.width * 0.65) ? leftPaddle : rightPaddle;
-        $scope.refresh(pTarget);
+        let isLeftPaddle = ball.x < canvas.width * 0.65;
+        let pTarget = isLeftPaddle ? leftPaddle : rightPaddle;
+        let tag = isLeftPaddle ? 'left' : 'right';
+        $scope.refresh(pTarget, tag);
     }, 10);
 
     // select canvas element
@@ -209,7 +213,7 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
     }
 
     // number of frames per second
-    let framePerSecond = 60;
+    let framePerSecond = 50;
 
     //call the game function by FPS
     let loop = setInterval(game, 1000 / framePerSecond);

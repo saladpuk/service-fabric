@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Actors.Client;
-using ReliableMessagingServer.Interfaces;
+using RightPaddle.Interfaces;
 using ReliableMessaging.Shared;
 
-namespace ReliableMessagingServer
+namespace RightPaddle
 {
     /// <remarks>
     /// This class represents an actor.
@@ -20,14 +20,14 @@ namespace ReliableMessagingServer
     ///  - None: State is kept in memory only and not replicated.
     /// </remarks>
     [StatePersistence(StatePersistence.Persisted)]
-    internal class ReliableMessagingServer : Actor, IReliableMessagingServer
+    internal class RightPaddle : Actor, IRightPaddle
     {
         /// <summary>
-        /// Initializes a new instance of ReliableMessagingServer
+        /// Initializes a new instance of RightPaddle
         /// </summary>
         /// <param name="actorService">The Microsoft.ServiceFabric.Actors.Runtime.ActorService that will host this actor instance.</param>
         /// <param name="actorId">The Microsoft.ServiceFabric.Actors.ActorId for this actor instance.</param>
-        public ReliableMessagingServer(ActorService actorService, ActorId actorId)
+        public RightPaddle(ActorService actorService, ActorId actorId)
             : base(actorService, actorId)
         {
         }

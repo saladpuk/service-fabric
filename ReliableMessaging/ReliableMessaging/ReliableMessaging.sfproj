@@ -32,10 +32,12 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LeftPaddle\LeftPaddle.csproj" />
     <ProjectReference Include="..\ReliableMessagingServer\ReliableMessagingServer.csproj" />
     <ProjectReference Include="..\ReliableMessagingWeb\ReliableMessagingWeb.csproj">
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>
+    <ProjectReference Include="..\RightPaddle\RightPaddle.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <PropertyGroup>
