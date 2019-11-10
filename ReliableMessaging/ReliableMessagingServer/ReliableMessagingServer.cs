@@ -8,6 +8,8 @@ using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Actors.Client;
 using ReliableMessagingServer.Interfaces;
 using ReliableMessaging.Shared;
+using LeftPaddle.Interfaces;
+using RightPaddle.Interfaces;
 
 namespace ReliableMessagingServer
 {
@@ -22,14 +24,19 @@ namespace ReliableMessagingServer
     [StatePersistence(StatePersistence.Persisted)]
     internal class ReliableMessagingServer : Actor, IReliableMessagingServer
     {
+        private readonly ILeftPaddle leftPaddle;
+        private readonly IRightPaddle rightPaddle;
+
         /// <summary>
         /// Initializes a new instance of ReliableMessagingServer
         /// </summary>
         /// <param name="actorService">The Microsoft.ServiceFabric.Actors.Runtime.ActorService that will host this actor instance.</param>
         /// <param name="actorId">The Microsoft.ServiceFabric.Actors.ActorId for this actor instance.</param>
-        public ReliableMessagingServer(ActorService actorService, ActorId actorId)
+        public ReliableMessagingServer(ActorService actorService, ActorId actorId, ILeftPaddle leftPaddle, IRightPaddle rightPaddle)
             : base(actorService, actorId)
         {
+            this.leftPaddle = leftPaddle;
+            this.rightPaddle = rightPaddle;
         }
 
         /// <summary>
@@ -48,7 +55,25 @@ namespace ReliableMessagingServer
             return this.StateManager.TryAddStateAsync("count", 0);
         }
 
-        public Task<CalculationResponse> CalculatePosition(CalculationRequest req)
-            => Task.FromResult(new PaddleCalculationService().CalculatePosition(req));
+        public async Task<GetPaddlePositionResponse> GetPaddlePosition(GameInformation req)
+        {
+            var request = new CalculationRequest
+            {
+                BallPositionY = req.BallPositionY,
+                PlayerHeight = req.PlayerHeight,
+                PlayerPositionY = req.PlayerPositionY,
+            };
+
+            var isLeftPaddle = req.Tag == "left";
+            var result = isLeftPaddle ?
+                await leftPaddle.CalculatePosition(request) :
+                await rightPaddle.CalculatePosition(request);
+
+            return new GetPaddlePositionResponse
+            {
+                Tag = req.Tag,
+                MovementPoistionY = result.MovementPoistionY,
+            };
+        }
     }
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Services.Remoting;
-using ReliableMessaging.Shared;
 
 [assembly: FabricTransportActorRemotingProvider(RemotingListenerVersion = RemotingListenerVersion.V2_1, RemotingClientVersion = RemotingClientVersion.V2_1)]
 namespace ReliableMessagingServer.Interfaces
@@ -17,6 +16,6 @@ namespace ReliableMessagingServer.Interfaces
     /// </summary>
     public interface IReliableMessagingServer : IActor
     {
-        Task<CalculationResponse> CalculatePosition(CalculationRequest req);
+        Task<GetPaddlePositionResponse> GetPaddlePosition(GameInformation req);
     }
 }

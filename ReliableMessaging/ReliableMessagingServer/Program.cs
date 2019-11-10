@@ -3,7 +3,11 @@ using System.Diagnostics;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using LeftPaddle.Interfaces;
+using Microsoft.ServiceFabric.Actors;
+using Microsoft.ServiceFabric.Actors.Client;
 using Microsoft.ServiceFabric.Actors.Runtime;
+using RightPaddle.Interfaces;
 
 namespace ReliableMessagingServer
 {
@@ -21,8 +25,17 @@ namespace ReliableMessagingServer
                 // are automatically populated when you build this project.
                 // For more information, see https://aka.ms/servicefabricactorsplatform
 
-                ActorRuntime.RegisterActorAsync<ReliableMessagingServer> (
-                   (context, actorType) => new ActorService(context, actorType)).GetAwaiter().GetResult();
+                var leftPaddle = ActorProxy.Create<ILeftPaddle>(
+                        new ActorId("Left"),
+                        new Uri("fabric:/ReliableMessaging/LeftPaddleActorService"));
+
+                var rightPaddle = ActorProxy.Create<IRightPaddle>(
+                        new ActorId("Right"),
+                        new Uri("fabric:/ReliableMessaging/RightPaddleActorService"));
+
+                ActorRuntime.RegisterActorAsync<ReliableMessagingServer>(
+                           (context, actorType) => new ActorService(context, actorType, (actSvc, actId) => new ReliableMessagingServer(actSvc, actId, leftPaddle, rightPaddle)))
+                    .GetAwaiter().GetResult();
 
                 Thread.Sleep(Timeout.Infinite);
             }

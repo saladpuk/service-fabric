@@ -11,17 +11,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingServer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessagingServer.Interfaces", "ReliableMessagingServer.Interfaces\ReliableMessagingServer.Interfaces.csproj", "{445A6222-8147-4589-9CAB-50DE18B25306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableMessaging.Shared", "ReliableMessaging.Shared\ReliableMessaging.Shared.csproj", "{B4D17097-A4A8-4545-BDC1-74C2E0F5686E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReliableMessaging.Shared", "ReliableMessaging.Shared\ReliableMessaging.Shared.csproj", "{B4D17097-A4A8-4545-BDC1-74C2E0F5686E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Paddles", "Paddles", "{B8627B3A-235D-4C63-9ACD-216CA6C354C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeftPaddle", "LeftPaddle\LeftPaddle.csproj", "{DCDE204A-FE6A-4ECF-A132-983E78CA42EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeftPaddle", "LeftPaddle\LeftPaddle.csproj", "{DCDE204A-FE6A-4ECF-A132-983E78CA42EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeftPaddle.Interfaces", "LeftPaddle.Interfaces\LeftPaddle.Interfaces.csproj", "{E11CF884-11C4-44E6-B502-318B181A057D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeftPaddle.Interfaces", "LeftPaddle.Interfaces\LeftPaddle.Interfaces.csproj", "{E11CF884-11C4-44E6-B502-318B181A057D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RightPaddle", "RightPaddle\RightPaddle.csproj", "{E1D08443-372A-4D92-BD2E-9060004AB769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RightPaddle", "RightPaddle\RightPaddle.csproj", "{E1D08443-372A-4D92-BD2E-9060004AB769}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RightPaddle.Interfaces", "RightPaddle.Interfaces\RightPaddle.Interfaces.csproj", "{2F601A8E-6B39-4238-938A-339A8DF443EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RightPaddle.Interfaces", "RightPaddle.Interfaces\RightPaddle.Interfaces.csproj", "{2F601A8E-6B39-4238-938A-339A8DF443EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +108,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B4D17097-A4A8-4545-BDC1-74C2E0F5686E} = {B8627B3A-235D-4C63-9ACD-216CA6C354C7}
 		{DCDE204A-FE6A-4ECF-A132-983E78CA42EC} = {B8627B3A-235D-4C63-9ACD-216CA6C354C7}
 		{E11CF884-11C4-44E6-B502-318B181A057D} = {B8627B3A-235D-4C63-9ACD-216CA6C354C7}
 		{E1D08443-372A-4D92-BD2E-9060004AB769} = {B8627B3A-235D-4C63-9ACD-216CA6C354C7}

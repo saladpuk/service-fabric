@@ -12,6 +12,9 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.ServiceFabric.Data;
 using System.Net.Http;
+using Microsoft.ServiceFabric.Actors.Client;
+using ReliableMessagingServer.Interfaces;
+using Microsoft.ServiceFabric.Actors;
 
 namespace ReliableMessagingWeb
 {
@@ -41,13 +44,18 @@ namespace ReliableMessagingWeb
                             {
                                 ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
 
+                                var actor = ActorProxy.Create<IReliableMessagingServer>(
+                                    new ActorId("Main"),
+                                    new Uri("fabric:/ReliableMessaging/ReliableMessagingServerActorService"));
+
                                 return new WebHostBuilder()
                                     .UseKestrel()
                                     .ConfigureServices(
                                         services => services
                                             .AddSingleton<HttpClient>(new HttpClient())
                                             .AddSingleton<FabricClient>(new FabricClient())
-                                            .AddSingleton<StatelessServiceContext>(serviceContext))
+                                            .AddSingleton<StatelessServiceContext>(serviceContext)
+                                            .AddSingleton<IReliableMessagingServer>(actor))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)

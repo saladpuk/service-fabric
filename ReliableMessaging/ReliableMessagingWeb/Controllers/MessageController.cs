@@ -22,39 +22,24 @@ namespace ReliableMessagingWeb.Controllers
     [Route("api/[controller]")]
     public class MessageController : Controller
     {
-        private ILeftPaddle leftPaddle = ActorProxy.Create<ILeftPaddle>(
-                new ActorId("Left"),
-                new Uri("fabric:/ReliableMessaging/LeftPaddleActorService"));
+        private readonly IReliableMessagingServer actor;
 
-        private IRightPaddle rightPaddle = ActorProxy.Create<IRightPaddle>(
-                new ActorId("Right"),
-                new Uri("fabric:/ReliableMessaging/RightPaddleActorService"));
+        public MessageController(IReliableMessagingServer actor)
+        {
+            this.actor = actor;
+        }
 
         [HttpGet("{ballY}/{positionY}/{height}/{tag}")]
         public async Task<IActionResult> Get(double ballY, double positionY, double height, string tag)
         {
-            if (tag == "left")
+            var result = await actor.GetPaddlePosition(new GameInformation
             {
-                var actor = leftPaddle;
-                var result = await actor.CalculatePosition(new CalculationRequest
-                {
-                    BallPositionY = ballY,
-                    PlayerPositionY = positionY,
-                    PlayerHeight = height,
-                });
-                return Json(result.MovementPoistionY);
-            }
-            else
-            {
-                var actor = rightPaddle;
-                var result = await actor.CalculatePosition(new CalculationRequest
-                {
-                    BallPositionY = ballY,
-                    PlayerPositionY = positionY,
-                    PlayerHeight = height,
-                });
-                return Json(result.MovementPoistionY);
-            }
+                BallPositionY = ballY,
+                PlayerPositionY = positionY,
+                PlayerHeight = height,
+                Tag = tag,
+            });
+            return Json(result.MovementPoistionY);
         }
     }
 }

@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LeftPaddle.Interfaces\LeftPaddle.Interfaces.csproj" />
     <ProjectReference Include="..\ReliableMessagingServer.Interfaces\ReliableMessagingServer.Interfaces.csproj" />
+    <ProjectReference Include="..\RightPaddle.Interfaces\RightPaddle.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>
