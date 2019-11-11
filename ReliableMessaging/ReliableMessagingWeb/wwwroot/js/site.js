@@ -1,13 +1,13 @@
 ﻿var app = angular.module('MessageApp', ['ui.bootstrap']);
-app.run(function () { });
+app.run(function() { });
 
-app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeout', function ($rootScope, $scope, $http, $timeout) {
+app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeout', function($rootScope, $scope, $http, $timeout) {
 
     console.log('Version 2.0');
 
     var isPaddleReady = false;
 
-    $scope.refresh = function (paddleTarget, tag) {
+    $scope.refresh = function(paddleTarget, tag) {
         $http({
             method: "GET",
             url: 'api/Message/' + ball.y + '/' + paddleTarget.y + '/' + paddleTarget.height + '/' + tag + '?c=' + new Date().getTime(),
@@ -130,7 +130,6 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         return p.left < b.right && p.top < b.bottom && p.right > b.left && p.bottom > b.top;
     }
 
-    var isLockDirection = false;
     function update() {
         // change the score
         if (ball.x - ball.radius < 0) {
@@ -146,14 +145,10 @@ app.controller('MessageAppController', ['$rootScope', '$scope', '$http', '$timeo
         ball.y += ball.velocityY;
 
         // when the ball collides with bottom and top walls we inverse the y velocity.
-        if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= canvas.height) {
-            if (isLockDirection === false) {
-                ball.velocityY = -ball.velocityY;
-                isLockDirection = true;
-            }
-        }
-        else {
-            isLockDirection = false;
+        let isBallOverTop = ball.y - ball.radius < 0 && ball.velocityY < 0;
+        let isBallOverBottom = ball.y + ball.radius > canvas.height && ball.velocityY > 0;
+        if (isBallOverTop || isBallOverBottom) {
+            ball.velocityY = -ball.velocityY;
         }
 
         // we check if the paddle hit the left paddle or the right paddle
